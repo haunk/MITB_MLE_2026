@@ -37,17 +37,5 @@ The course uses **open-source, cloud-compatible, cloud-agnostic tools** includin
 - **Notebooks:** Jupyter
 - **Cloud:** Cloud-agnostic design principles
 
-
-### Project Breakdown
-
-The course project requires building an end-to-end ML pipeline using open-source tools:
-
-- Select your own dataset and ML model
-- Build a complete ML pipeline (data processing, model training, deployment/serving)
-- Document design architecture and justify design choices
-- Provide a README with steps to run the pipeline
-- CI/CD is optional but recommended
-
-
 ---
 *Deeply thank you Professor Ulysses Chong Min Zhen for guiding us.*
