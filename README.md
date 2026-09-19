@@ -9,24 +9,6 @@ This course bridges the gap between building ML models and deploying them in pro
 
 The course uses **open-source, cloud-compatible, cloud-agnostic tools** including Airflow, PySpark, Python, Jupyter Notebooks, Docker, and more.
 
-## Learning Objectives
-
-- Understand the definition and importance of machine learning engineering and solutions architecting
-- Build ML pipelines covering data preprocessing, model training, evaluation, deployment, monitoring, and more
-- Deploy ML pipelines through CI/CD (Continuous Integration / Continuous Deployment) practices
-- Deploy ML pipelines and CI/CD systems on cloud infrastructure
-- Adopt and apply machine learning engineering best practices in real-world settings
-
-## Course Topics
-
-### Lecture 1: Introduction
-
-- **Machine Learning Lifecycle** - End-to-end view from data to deployment
-- **Challenges of Operationalizing ML** - Training-serving skew, experiment tracking, continuous retraining, model fairness and ethics
-- **Requirements for Production ML Systems** - Reliability, Scalability, Maintainability, Adaptability, Iterative Process
-- **ML Pipeline and ML Steps** - Data processing, model training, model evaluation, model deployment, pipeline orchestration
-- **MLOps** - Methodology unifying ML development with ML operations (analogous to DevOps for software engineering)
-
 ### Key Concepts Covered Throughout the Course
 
 | Area | Topics |
