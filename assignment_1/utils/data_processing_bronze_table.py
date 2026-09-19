@@ -1,35 +1,45 @@
 import os
-import glob
 import pandas as pd
-import matplotlib.pyplot as plt
-import numpy as np
-import random
-from datetime import datetime, timedelta
-from dateutil.relativedelta import relativedelta
-import pprint
+from datetime import datetime
 import pyspark
 import pyspark.sql.functions as F
-import argparse
 
 from pyspark.sql.functions import col
 from pyspark.sql.types import StringType, IntegerType, FloatType, DateType
 
 
-def process_bronze_table(snapshot_date_str, bronze_lms_directory, spark, data_file_name):
+def process_bronze_table(snapshot_date_str, bronze_directory, spark, data_file_name):
+    """
+    Bronze layer: raw ingestion from source CSV, partitioned by snapshot_date.
+    No cleaning or type casting. Saves raw data as-is.
+
+    Args:
+        snapshot_date_str: date string in 'YYYY-MM-DD' format
+        bronze_directory: path to bronze output directory (e.g. 'datamart/bronze/lms/')
+        spark: SparkSession
+        data_file_name: source file name without extension (e.g. 'lms_loan_daily')
+
+    Returns:
+        Spark DataFrame of ingested data for this snapshot_date
+    """
     # prepare arguments
     snapshot_date = datetime.strptime(snapshot_date_str, "%Y-%m-%d")
-    
+
     # connect to source back end - IRL connect to back end source system
     csv_file_path = f"data/{data_file_name}.csv"
 
     # load data - IRL ingest from back end source system
-    df = spark.read.csv(csv_file_path, header=True, inferSchema=True).filter(col('snapshot_date') == snapshot_date)
-    print(snapshot_date_str + 'row count:', df.count())
-    
+    df = spark.read.csv(csv_file_path, header=True, inferSchema=True)
+    df = df.filter(col("snapshot_date") == snapshot_date)
+
+    row_count = df.count()
+    print(f"{snapshot_date_str} | {data_file_name} | row count: {row_count}")
+
     # save bronze table to datamart - IRL connect to database to write
-    partition_name = f"bronze_{data_file_name}_{snapshot_date_str.replace('-','_')}.csv"
-    filepath = bronze_lms_directory + partition_name
+    # always save partition (even if empty) for auditability
+    partition_name = f"bronze_{data_file_name}_{snapshot_date_str.replace('-', '_')}.csv"
+    filepath = os.path.join(bronze_directory, partition_name)
     df.toPandas().to_csv(filepath, index=False)
-    print('saved to:', filepath)
+    print(f"saved to: {filepath}")
 
     return df
