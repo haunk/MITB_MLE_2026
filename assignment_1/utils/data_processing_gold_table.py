@@ -130,14 +130,10 @@ def process_gold_feature_store(
     new_loan_count = df_new_loans.count()
     print(f"{snapshot_date_str} | new loans: {new_loan_count}")
 
-    # Save empty partition for auditability even when no new loans
+    # Skip months with no new loans
     if new_loan_count == 0:
-        empty_schema = _build_empty_schema(spark)
-        partition_name = f"gold_feature_store_{date_tag}.parquet"
-        filepath = os.path.join(gold_feature_store_directory, partition_name)
-        empty_schema.write.mode("overwrite").parquet(filepath)
-        print(f"saved to: {filepath} (empty)")
-        return empty_schema
+        print(f"{snapshot_date_str} | no new loans, skipping")
+        return None
 
     # ------------------------------------------------------------------ #
     # Step 2: Load attributes for this snapshot_date
